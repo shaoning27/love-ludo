@@ -88,7 +88,6 @@ export function SignUpForm({
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 bg-transparent border-none outline-none text-white placeholder-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
         </div>
@@ -107,7 +106,6 @@ export function SignUpForm({
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="flex-1 bg-transparent border-none outline-none text-white placeholder-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0"
-            />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
@@ -123,7 +121,6 @@ export function SignUpForm({
           onClick={generateRandomAccount}
           className="w-full glass py-3 rounded-xl font-medium hover:bg-white/10 transition-all flex items-center justify-center space-x-2"
         >
-          <Shuffle className="w-5 h-5" />
           <span>生成随机邮箱和密码</span>
         </Button>
 
@@ -134,7 +131,7 @@ export function SignUpForm({
           disabled={isLoading}
           className="w-full gradient-primary py-3.5 rounded-xl font-semibold glow-pink transition-all hover:scale-105 active:scale-95 mt-6 text-white"
         >
-          {isLoading ? "注册中..." : "注册"}
+          {isLoading ? "注册中，需要等待几十秒..." : "注册"}
         </Button>
       </form>
     </div>
