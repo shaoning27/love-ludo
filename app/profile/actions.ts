@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { ensureProfile } from "@/lib/profile";
 
 type UpdatePreferencesPayload = {
   gender: "male" | "female" | "non_binary";
@@ -47,6 +48,8 @@ export async function updateNickname(nickname: string): Promise<{ ok: boolean; e
 export async function updatePreferences(payload: UpdatePreferencesPayload): Promise<{ ok: boolean; error?: string }> {
   try {
     const { supabase, userId } = await requireUser();
+    // 确保存在个人档案记录，避免更新 0 行导致 single() 报错
+    await ensureProfile();
 
     const allowed = ["male", "female", "non_binary"] as const;
     if (!allowed.includes(payload.gender)) {
@@ -61,6 +64,8 @@ export async function updatePreferences(payload: UpdatePreferencesPayload): Prom
       .from("profiles")
       .update({ preferences, updated_at: new Date().toISOString() })
       .eq("id", userId)
+      // 通过 select 返回代表性记录，避免 PostgREST 的 JSON 单对象强制转换错误
+      .select("id")
       .single();
 
     if (error) return { ok: false, error: error.message };

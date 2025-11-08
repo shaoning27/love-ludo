@@ -3,12 +3,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { listAvailableThemes, createRoom, joinRoom } from "./actions";
 import { Users, LogIn, Layers, ChevronDown, Hash } from "lucide-react";
+import PreferencesModal from "@/components/profile/preferences-modal";
 
 export default async function LobbyPage({ searchParams }: { searchParams?: { error?: string } }) {
   const { data: themes } = await listAvailableThemes();
   const errorMessage = searchParams?.error ?? "";
   return (
     <>
+      {/* 首次进入首页时的偏好设置弹窗（仅登录用户，且偏好未完善时提示） */}
+      <PreferencesModal />
       <div className="max-w-md mx-auto min-h-svh flex flex-col p-6 pb-24">
         <div className="flex items-center justify-between mb-6 pt-4">
           <div>
